@@ -1,0 +1,65 @@
+body {
+    background-color:#282b39;
+}
+
+.container {
+    width: 480px;
+    text-align: center;
+}
+
+#logo-axie-infinity-container {
+    margin-top: 25px;
+}
+
+#logo-axie-infinity-img {
+    width: 150px;
+}
+
+#round-container {
+    margin-top: 10px;
+}
+
+#round {
+    color:orange;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0;
+}
+
+#logo-energy-img {
+    width: 60px;
+}
+
+#logo-energy-container {
+    margin-top: 10px;
+}
+
+#energy {
+    color:orange;
+    font-size: 40px;
+    margin: 0;
+}
+
+#buttons-container {
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
+.button-container {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+button {
+    background-color: orange;
+    border: 2px solid darkorange;
+    border-radius: 4px;
+    color: white;
+    width: 110px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#classes-img {
+    width: 400px;
+}
