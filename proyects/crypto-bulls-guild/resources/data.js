@@ -3,13 +3,16 @@ var data = {
         "tittleName": "Crypto Bulls Guild",
         "nftName": "Crypto Bulls",
         "description": "When a wraith daddy and a banshee mommy love each other very much, something magical happens. Out of the cabbage patch next to the graveyard rises a brand new generation of revenants! At pre-K, Baby Ghosts make friends and discover the world, until one day, the whole daycare is exorcised and all Baby Ghosts are released!",
-        "mintPrice": "0.015 ETH",
+        "mintPrice": 0.01,
+        "tokenSymbol": "ETH",
         "chainId": "0x4"
         //"chainId": "0x4"
     },
     "contractNFT": {
         "address": "0xA4d7CaBA39aD147ca62e583ee486f5B9906eab63",
-        "abi": "function makeAnEpicNFT()",
+        "abi": [
+            "function makeAnEpicNFT(uint256 amount) payable",
+        ],
         "function": "makeAnEpicNFT"
     },
     "blockchainExplorer": {

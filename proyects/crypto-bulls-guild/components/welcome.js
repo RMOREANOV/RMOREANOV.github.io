@@ -138,6 +138,7 @@ Vue.component('mint', {
             },
             nftName: data.proyect.nftName,
             mintPrice: data.proyect.mintPrice,
+            tokenSymbol: data.proyect.tokenSymbol,
             chainId: data.proyect.chainId,
             contractNFTAddress: data.contractNFT.address,
             contractNFTAbi: data.contractNFT.abi,
@@ -145,6 +146,7 @@ Vue.component('mint', {
             blockchainExplorerURL: data.blockchainExplorer.url,
             blockchainExplorerQuery: data.blockchainExplorer.query,
             blockchainExplorerApiKey: data.blockchainExplorer.apiKey,
+            account: null,
             networks: data.networks,
             metamaskButtonName: 'default',
             totalMinted: '-'
@@ -153,7 +155,7 @@ Vue.component('mint', {
     template: `
         <div class="d-flex flex-column justify-content-center mt-4">
             <div class="d-flex justify-content-center" :style=styles.textContainer>
-                <span :style=styles.textInicial>MINT PRICE</span><span>&nbsp;</span><span :style=styles.textFinal>IS {{mintPrice}}</span>
+                <span :style=styles.textInicial>MINT PRICE</span><span>&nbsp;</span><span :style=styles.textFinal>IS {{mintPrice}} {{tokenSymbol}}</span>
             </div>
             <div class="d-flex justify-content-center mt-2" :style=styles.textContainer>
                 <span :style=styles.textMiddle>Mint the {{nftName}} using <b>Metamask</b> Wallet</span>
@@ -214,6 +216,7 @@ Vue.component('mint', {
                     if(chainId==this.chainId){
                         this.metamaskButtonName='mint'
                         this.styles.buttonContainer.opacity=1
+                        await this.getAccount()
                     }else{
                         this.metamaskButtonName='switch'
                         await this.switchNetwork()
@@ -235,6 +238,7 @@ Vue.component('mint', {
                 });
                 this.metamaskButtonName='mint'
                 this.styles.buttonContainer.opacity=1
+                await this.getAccount()
             } catch (error) {
                 console.error(error);
                 if(error.code==4902){
@@ -263,16 +267,20 @@ Vue.component('mint', {
             var network = this.networks.find(network => {return network.chainId == this.chainId})
             return network?network:{chainName:""}
         },
+        async getAccount() {
+            var accounts = await ethereum.request({method: 'eth_requestAccounts'})
+            this.account = accounts[0]
+        },
         async mintNFTs() {
             try {
                 //0x89
-                var accounts = await ethereum.request({method: 'eth_requestAccounts'})
-                var abiInterface = new ethers.utils.Interface([this.contractNFTAbi]);
-                var functionData = abiInterface.encodeFunctionData(this.contractNFTFunction);
+                var abiInterface = new ethers.utils.Interface(this.contractNFTAbi);
+                var functionData = abiInterface.encodeFunctionData(this.contractNFTFunction, [ethers.utils.parseEther(this.slider.value.toString())]);
                 const transactionParameters = {
-                    from: accounts[0],
+                    from: this.account,
                     to: this.contractNFTAddress,
-                    value: ethers.utils.hexlify(ethers.utils.parseEther("0.0")),
+                    gas: ethers.utils.hexlify(240000),
+                    value: ethers.utils.hexlify(ethers.utils.parseEther((this.mintPrice*this.slider.value).toString())),
                     data: functionData,
                     chainId: this.chainId
                 };
@@ -298,7 +306,7 @@ Vue.component('mint', {
         await this.getTotalMinted()
         setInterval(async () => {
             await this.getTotalMinted()
-        }, 5000);
+        }, 1000);
         const { ethereum } = window;
         if(ethereum && ethereum.isMetaMask){
             this.metamaskButtonName='connect'
