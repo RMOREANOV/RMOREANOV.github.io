@@ -42,13 +42,13 @@ body {
 }
 
 @keyframes listImageMoveNormal {
-    0% {left: -600px;}
+    0% {left: -3000px;}
     50% {left: 0px;}
-    100% {left: -600px;}
+    100% {left: -3000px;}
 }
 
 @keyframes listImageMoveInvert {
     0% {left: 0px;}
-    50% {left: -600px;}
+    50% {left: -3000px;}
     100% {left: 0px;}
 }

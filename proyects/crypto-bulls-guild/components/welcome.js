@@ -312,14 +312,14 @@ Vue.component('sliders', {
                     'width': '30000px'
                 },
                 imageList1: {
-                    'animation': 'listImageMoveNormal 40s linear infinite'
+                    'animation': 'listImageMoveNormal 60s linear infinite'
                 },
                 imageList2: {
-                    'animation': 'listImageMoveInvert 40s linear infinite',
+                    'animation': 'listImageMoveInvert 60s linear infinite',
                     'top': '260px'
                 },
                 imageList3: {
-                    'animation': 'listImageMoveNormal 40s linear infinite',
+                    'animation': 'listImageMoveNormal 60s linear infinite',
                     'top': '520px'
                 },
                 image: {
@@ -341,18 +341,21 @@ Vue.component('sliders', {
             <div class="position-relative mt-4" :style=styles.overflowImages>
                 <div class="d-flex flex-column" :style=styles.containerImages>
                     <div class="d-flex mb-2 position-absolute" :style=styles.imageList1>
-                        <div v-for="(n, index) in 10" :style=styles.image>
-                            <img class="w-100 h-100" v-bind:src="'images/sliders/'+n+'.png'">
+                        <div v-for="(n, index) in 20" :style=styles.image>
+                            <img v-if="n<=10" class="w-100 h-100" v-bind:src="'images/sliders/'+n+'.png'">
+                            <img v-else class="w-100 h-100" v-bind:src="'images/sliders/'+(n-10)+'.png'">
                         </div>
                     </div>
                     <div class="d-flex mb-2 position-absolute" :style=styles.imageList2>
-                        <div v-for="(n, index) in 10" :style=styles.image>
-                            <img class="w-100 h-100" v-bind:src="'images/sliders/'+(n+10)+'.png'">
+                        <div v-for="(n, index) in 20" :style=styles.image>
+                            <img v-if="n<=10" class="w-100 h-100" v-bind:src="'images/sliders/'+(n+10)+'.png'">
+                            <img v-else class="w-100 h-100" v-bind:src="'images/sliders/'+(n)+'.png'">
                         </div>
                     </div>
                     <div class="d-flex position-absolute" :style=styles.imageList3>
-                        <div v-for="(n, index) in 10" :style=styles.image>
-                            <img class="w-100 h-100 p-0" v-bind:src="'images/sliders/'+(n+20)+'.png'">
+                        <div v-for="(n, index) in 20" :style=styles.image>
+                            <img v-if="n<=10" class="w-100 h-100 p-0" v-bind:src="'images/sliders/'+(n+20)+'.png'">
+                            <img v-else class="w-100 h-100 p-0" v-bind:src="'images/sliders/'+(n+10)+'.png'">
                         </div>
                     </div>
                 </div>
