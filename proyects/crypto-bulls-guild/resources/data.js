@@ -7,6 +7,16 @@ var data = {
         "chainId": "0x4"
         //"chainId": "0x4"
     },
+    "contractNFT": {
+        "address": "0xA4d7CaBA39aD147ca62e583ee486f5B9906eab63",
+        "abi": "function makeAnEpicNFT()",
+        "function": "makeAnEpicNFT"
+    },
+    "blockchainExplorer": {
+        "url": "https://api-rinkeby.etherscan.io/api?module=account&action=tokennfttx&contractaddress=",
+        "query": "&apikey=",
+        "apiKey": "Q3AVI9S29M5NMPSUCFE99MR6DT27MHGWP4"
+    },
     "networks": [
         {
             "chainId": "0x89",

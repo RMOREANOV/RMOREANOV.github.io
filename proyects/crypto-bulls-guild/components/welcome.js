@@ -139,9 +139,15 @@ Vue.component('mint', {
             nftName: data.proyect.nftName,
             mintPrice: data.proyect.mintPrice,
             chainId: data.proyect.chainId,
+            contractNFTAddress: data.contractNFT.address,
+            contractNFTAbi: data.contractNFT.abi,
+            contractNFTFunction: data.contractNFT.function,
+            blockchainExplorerURL: data.blockchainExplorer.url,
+            blockchainExplorerQuery: data.blockchainExplorer.query,
+            blockchainExplorerApiKey: data.blockchainExplorer.apiKey,
             networks: data.networks,
             metamaskButtonName: 'default',
-            minted: 101
+            totalMinted: '-'
         }
     },
     template: `
@@ -189,7 +195,7 @@ Vue.component('mint', {
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-center mt-4" :style=styles.mintedTotal>{{minted}}<span :style=styles.mintedFinal>/10000 MINTED</span></div>
+            <div class="d-flex justify-content-center mt-4" :style=styles.mintedTotal>{{totalMinted}}<span :style=styles.mintedFinal>/10000 MINTED</span></div>
 
         </div>
     `,
@@ -222,7 +228,6 @@ Vue.component('mint', {
             }
         },
         async switchNetwork() {
-            console.log("dsdsada")
             try {
                 await ethereum.request({
                     method: "wallet_switchEthereumChain",
@@ -261,11 +266,12 @@ Vue.component('mint', {
         async mintNFTs() {
             try {
                 //0x89
-                var abiInterface = new ethers.utils.Interface(["function makeAnEpicNFT()",]);
-                var functionData = abiInterface.encodeFunctionData('makeAnEpicNFT');
+                var accounts = await ethereum.request({method: 'eth_requestAccounts'})
+                var abiInterface = new ethers.utils.Interface([this.contractNFTAbi]);
+                var functionData = abiInterface.encodeFunctionData(this.contractNFTFunction);
                 const transactionParameters = {
-                    from: "0xC89d4Fb3F63cc2e7323558EDD36157F2cF485e31",
-                    to: '0xA4d7CaBA39aD147ca62e583ee486f5B9906eab63',
+                    from: accounts[0],
+                    to: this.contractNFTAddress,
                     value: ethers.utils.hexlify(ethers.utils.parseEther("0.0")),
                     data: functionData,
                     chainId: this.chainId
@@ -278,14 +284,27 @@ Vue.component('mint', {
             } catch (error) {
                 console.error(error);
             }
+        },
+        async getTotalMinted(){
+            var url=this.blockchainExplorerURL+this.contractNFTAddress+this.blockchainExplorerQuery+this.blockchainExplorerApiKey
+            let response = await fetch(url);
+            let data = await response.json();
+            if(data.status=='1'){
+                this.totalMinted=data.result.length
+            }
         }
     },
     async created() {
+        await this.getTotalMinted()
+        setInterval(async () => {
+            await this.getTotalMinted()
+        }, 5000);
         const { ethereum } = window;
         if(ethereum && ethereum.isMetaMask){
             this.metamaskButtonName='connect'
         }
         this.styles.buttonContainer.opacity=1
+
     }
 })
 
