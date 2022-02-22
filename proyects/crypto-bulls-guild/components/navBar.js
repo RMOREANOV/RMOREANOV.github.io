@@ -52,7 +52,7 @@ const navbar = new Vue({
             {value: 'Team'},
             {value: 'FAQ'}
         ],
-        social: data.social,
+        data: data
     },
     template: `
         <nav class="navbar navbar-expand-md">
@@ -68,9 +68,9 @@ const navbar = new Vue({
                     </ul>
                 </div>
                 <div>
-                    <a class="navbarSocial" :style=styles.navbarSocial :href=social.opensea target="_blank"><img src="images/navbar/opensea.svg"></a>
-                    <a class="navbarSocial" :style=styles.navbarSocial :href=social.discord target="_blank"><img src="images/navbar/discord.svg"></a>
-                    <a class="navbarSocial" :style=styles.navbarSocial :href=social.twitter target="_blank"><img src="images/navbar/twitter.svg"></a>
+                    <a class="navbarSocial" :style=styles.navbarSocial :href=data.proyect.social.opensea target="_blank"><img src="images/navbar/opensea.svg"></a>
+                    <a class="navbarSocial" :style=styles.navbarSocial :href=data.proyect.social.discord target="_blank"><img src="images/navbar/discord.svg"></a>
+                    <a class="navbarSocial" :style=styles.navbarSocial :href=data.proyect.social.twitter target="_blank"><img src="images/navbar/twitter.svg"></a>
                 </div>
             </div>
         </nav>

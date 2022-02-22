@@ -3,53 +3,114 @@ var data = {
         "tittleName": "Crypto Bulls Guild",
         "nftName": "Crypto Bulls",
         "description": "When a wraith daddy and a banshee mommy love each other very much, something magical happens. Out of the cabbage patch next to the graveyard rises a brand new generation of revenants! At pre-K, Baby Ghosts make friends and discover the world, until one day, the whole daycare is exorcised and all Baby Ghosts are released!",
-        "mintPrice": 0.01,
         "tokenSymbol": "ETH",
-        "chainId": "0x4"
-        //"chainId": "0x4"
+        "network": "Ethereum Test",
+        "social": {
+            "opensea": "https://opensea.io/collection/babyghosts",
+            "discord": "https://discord.gg/BabyGhosts",
+            "twitter": "https://twitter.com/BabyGhosts_NFT"
+        },
+        "contract": {
+            "address": "0x02692838Dc69690782435eB6B468583476ADDD3D",
+            "abi": [
+                {
+                    "inputs": [
+                      {
+                        "internalType": "uint256",
+                        "name": "_mintAmount",
+                        "type": "uint256"
+                      }
+                    ],
+                    "name": "mint",
+                    "outputs": [],
+                    "stateMutability": "payable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [],
+                    "name": "totalSupply",
+                    "outputs": [
+                      {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                      }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [],
+                    "name": "maxSupply",
+                    "outputs": [
+                      {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                      }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [],
+                    "name": "cost",
+                    "outputs": [
+                      {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                      }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                }
+            ]
+        }
     },
-    "contractNFT": {
-        "address": "0xA4d7CaBA39aD147ca62e583ee486f5B9906eab63",
-        "abi": [
-            "function makeAnEpicNFT(uint256 amount) payable",
-        ],
-        "function": "makeAnEpicNFT"
-    },
-    "blockchainExplorer": {
-        "url": "https://api-rinkeby.etherscan.io/api?module=account&action=tokennfttx&contractaddress=",
-        "query": "&apikey=",
-        "apiKey": "Q3AVI9S29M5NMPSUCFE99MR6DT27MHGWP4"
-    },
-    "networks": [
-        {
+    "networks": {
+        "Ethereum": {
+            "chainId": "0x1",
+            "chainName": "Ethereum Network",
+            "nativeCurrency": {name: "ETH", symbol: "ETH", decimals: 18},
+            "rpcUrls": ["https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"],
+            "blockExplorerUrls": ["https://etherscan.io"]
+        },
+        "Ethereum Test": {
+            "chainId": "0x4",
+            "chainName": "Rinkeby Network",
+            "nativeCurrency": {name: "ETH", symbol: "ETH", decimals: 18},
+            "rpcUrls": ["https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"],
+            "blockExplorerUrls": ["https://rinkeby.etherscan.io"]
+        },
+        "Polygon": {
             "chainId": "0x89",
             "chainName": "Polygon Network",
-            "shortName": "POLYGON",
             "nativeCurrency": {name: "MATIC", symbol: "MATIC", decimals: 18},
             "rpcUrls": ["https://polygon-rpc.com"],
             "blockExplorerUrls": ["https://www.polygonscan.com/"]
         },
-        {
+        "Polygon Test": {
             "chainId": "0x13881",
             "chainName": "Polygon Mumbai Testnet",
-            "shortName": "POLYGON TEST",
             "nativeCurrency": {name: "tMATIC", symbol: "tMATIC", decimals: 18},
             "rpcUrls": ["https://rpc-mumbai.maticvigil.com"],
             "blockExplorerUrls": ["https://mumbai.polygonscan.com/"]
         },
-        {
+        "BSC": {
             "chainId": '0x38',
             "chainName": 'Binance Smart Chain',
-            "shortName": "BSC",
             "nativeCurrency": { name: 'BNB', symbol: 'BNB', decimals: 18},
-            "rpcUrls": ["https://bsc-dataseed.binance.org"],
+            "rpcUrls": ["https://bsc-dataseed1.binance.org"],
             "blockExplorerUrls": ["https://bscscan.com/"]
+        },
+        "BSC Testnet": {
+            "chainId": '0x38',
+            "chainName": 'Binance Smart Chain Tesnet',
+            "nativeCurrency": { name: 'tBNB', symbol: 'tBNB', decimals: 18},
+            "rpcUrls": ["https://data-seed-prebsc-1-s1.binance.org:8545"],
+            "blockExplorerUrls": ["https://testnet.bscscan.com"]
         }
-    ],
-    "social": {
-        "opensea": "https://opensea.io/collection/babyghosts",
-        "discord": "https://discord.gg/BabyGhosts",
-        "twitter": "https://twitter.com/BabyGhosts_NFT"
     },
     "frequentlyAskedQuestions": {
         "description": "Each Baby Ghost is unique and programmatically generated from over 140 possible traits, including backgrounds, skins, eyes, disguises, accessories...",

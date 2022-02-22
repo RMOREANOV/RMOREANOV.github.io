@@ -133,42 +133,35 @@ Vue.component('mint', {
                     'color': 'rgb(193,196,190)',
                 }
             },
-            slider: {
-                'value': 1
-            },
-            nftName: data.proyect.nftName,
-            mintPrice: data.proyect.mintPrice,
-            tokenSymbol: data.proyect.tokenSymbol,
+            data: data,
+            mintAmount: 1,
             chainId: data.proyect.chainId,
-            contractNFTAddress: data.contractNFT.address,
-            contractNFTAbi: data.contractNFT.abi,
-            contractNFTFunction: data.contractNFT.function,
-            blockchainExplorerURL: data.blockchainExplorer.url,
-            blockchainExplorerQuery: data.blockchainExplorer.query,
-            blockchainExplorerApiKey: data.blockchainExplorer.apiKey,
             account: null,
-            networks: data.networks,
+            network: data.networks[data.proyect.network],
             metamaskButtonName: 'default',
-            totalMinted: '-'
+            cost: '-.--',
+            maxSupply: '--',
+            totalSupply: '--',
+
         }
     },
     template: `
         <div class="d-flex flex-column justify-content-center mt-4">
             <div class="d-flex justify-content-center" :style=styles.textContainer>
-                <span :style=styles.textInicial>MINT PRICE</span><span>&nbsp;</span><span :style=styles.textFinal>IS {{mintPrice}} {{tokenSymbol}}</span>
+                <span :style=styles.textInicial>MINT PRICE</span><span>&nbsp;</span><span :style=styles.textFinal>IS {{cost}} {{data.proyect.tokenSymbol}}</span>
             </div>
             <div class="d-flex justify-content-center mt-2" :style=styles.textContainer>
-                <span :style=styles.textMiddle>Mint the {{nftName}} using <b>Metamask</b> Wallet</span>
+                <span :style=styles.textMiddle>Mint the {{data.proyect.nftName}} using <b>Metamask</b> Wallet</span>
             </div>
             <div class="d-flex justify-content-center mt-2">
                 <div class="d-flex align-self-center position-relative":style=styles.sliderContainer>
                     <div class="d-flex align-items-center justify-content-center position-absolute" :style=styles.sliderFloatValue>
-                        <span :style=styles.sliderTextValue>{{ slider.value }}</span>
+                        <span :style=styles.sliderTextValue>{{mintAmount}}</span>
                         <div class="position-absolute" :style=styles.sliderTriangle></div>
                     </div>
                     <div class="w-100 h-100 d-flex align-items-center justify-content-center">
                         <div class="align-self-end position-relative" :style=styles.sliderBar>
-                            <input class="w-100 opacity-0 align-self-end" type="range" min="1" max="20" v-model="slider.value" v-on:input="changeSlider">
+                            <input class="w-100 opacity-0 align-self-end" type="range" min="1" max="20" v-model="mintAmount" v-on:input="changeSlider">
                             <div class="w-100 position-absolute" :style=styles.sliderBackground></div>
                             <div class="position-absolute" :style=styles.sliderProgress></div>
                             <div class="position-absolute" :style=styles.sliderCircle></div>
@@ -184,28 +177,28 @@ Vue.component('mint', {
                         </div>
                     </div>
                     <div v-if="metamaskButtonName=='connect'" class="w-100 h-100">
-                        <button id="btnDefault" class="btn w-100 h-100" :style="[styles.buttonDefault, styles.buttonConnectMetamask]" v-on:click="connect">CONNECT METAMASK</button>
+                        <button id="btnDefault" class="btn w-100 h-100 text-uppercase" :style="[styles.buttonDefault, styles.buttonConnectMetamask]" v-on:click="connect">Connect Metamask</button>
                     </div>
                     <div v-if="metamaskButtonName=='switch'" class="w-100 h-100">
-                        <button id="btnDefault" class="btn w-100 h-100" :style="[styles.buttonDefault, styles.buttonConnectMetamask]" v-on:click="switchNetwork">SWITCH {{this.getNetwork().shortName}}</button>
+                        <button id="btnDefault" class="btn w-100 h-100 text-uppercase" :style="[styles.buttonDefault, styles.buttonConnectMetamask]" v-on:click="switchNetwork">Switch {{this.data.proyect.network}}</button>
                     </div>
                     <div v-if="metamaskButtonName=='add'" class="w-100 h-100">
-                        <button id="btnDefault" class="btn w-100 h-100" :style="[styles.buttonDefault, styles.buttonConnectMetamask]" v-on:click="addNetwork">ADD {{this.getNetwork().shortName}}</button>
+                        <button id="btnDefault" class="btn w-100 h-100 text-uppercase" :style="[styles.buttonDefault, styles.buttonConnectMetamask]" v-on:click="addNetwork">Add {{this.data.proyect.network}}</button>
                     </div>
                     <div v-if="metamaskButtonName=='mint'" class="w-100 h-100">
-                        <button id="btnDefault" class="btn text-uppercase w-100 h-100" :style="[styles.buttonDefault, styles.buttonConnectMetamask]" v-on:click="mintNFTs">MINT {{slider.value}} {{nftName}}</button>
+                        <button id="btnDefault" class="btn w-100 h-100 text-uppercase" :style="[styles.buttonDefault, styles.buttonConnectMetamask]" v-on:click="mintNFTs">Mint {{mintAmount}} {{mintAmount!=1?data.proyect.nftName:data.proyect.nftName.slice(0,-1)}}</button>
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-center mt-4" :style=styles.mintedTotal>{{totalMinted}}<span :style=styles.mintedFinal>/10000 MINTED</span></div>
+            <div class="d-flex justify-content-center mt-4" :style=styles.mintedTotal>{{totalSupply}}<span :style=styles.mintedFinal>/{{maxSupply}} MINTED</span></div>
 
         </div>
     `,
     methods: {
         changeSlider: function() {
-            this.styles.sliderFloatValue.left="calc("+(this.slider.value-1)*90/19+"%)"
-            this.styles.sliderCircle.left="calc("+(this.slider.value-1)*95/19+"%)"
-            this.styles.sliderProgress.width=(this.slider.value-1)*100/19+"%"
+            this.styles.sliderFloatValue.left="calc("+(this.mintAmount-1)*90/19+"%)"
+            this.styles.sliderCircle.left="calc("+(this.mintAmount-1)*95/19+"%)"
+            this.styles.sliderProgress.width=(this.mintAmount-1)*100/19+"%"
         },
         async connect() {
             try {
@@ -213,7 +206,7 @@ Vue.component('mint', {
                 this.metamaskButtonName='switch'
                 try {
                     const chainId = await ethereum.request({method: 'eth_chainId'})
-                    if(chainId==this.chainId){
+                    if(chainId==this.network.chainId){
                         this.metamaskButtonName='mint'
                         this.styles.buttonContainer.opacity=1
                         await this.getAccount()
@@ -234,7 +227,7 @@ Vue.component('mint', {
             try {
                 await ethereum.request({
                     method: "wallet_switchEthereumChain",
-                    params: [{ chainId: this.chainId }],
+                    params: [{ chainId: this.network.chainId }],
                 });
                 this.metamaskButtonName='mint'
                 this.styles.buttonContainer.opacity=1
@@ -248,7 +241,7 @@ Vue.component('mint', {
             }
         },
         async addNetwork() {
-            var network = { ...this.getNetwork()}
+            var network = { ...this.network}
             delete network.shortName
             try {
                 await ethereum.request({
@@ -263,26 +256,21 @@ Vue.component('mint', {
                 this.styles.buttonContainer.opacity=1
             }
         },
-        getNetwork() {
-            var network = this.networks.find(network => {return network.chainId == this.chainId})
-            return network?network:{chainName:""}
-        },
         async getAccount() {
             var accounts = await ethereum.request({method: 'eth_requestAccounts'})
             this.account = accounts[0]
         },
         async mintNFTs() {
             try {
-                //0x89
-                var abiInterface = new ethers.utils.Interface(this.contractNFTAbi);
-                var functionData = abiInterface.encodeFunctionData(this.contractNFTFunction, [ethers.utils.parseEther(this.slider.value.toString())]);
+                var abiInterface = new ethers.utils.Interface(this.data.proyect.contract.abi);
+                var functionData = abiInterface.encodeFunctionData("mint", [this.mintAmount]);
                 const transactionParameters = {
                     from: this.account,
-                    to: this.contractNFTAddress,
-                    gas: ethers.utils.hexlify(240000),
-                    value: ethers.utils.hexlify(ethers.utils.parseEther((this.mintPrice*this.slider.value).toString())),
+                    to: this.data.proyect.contract.address,
+                    gas: ethers.utils.hexlify(120000),
+                    value: ethers.utils.hexlify(ethers.utils.parseEther((this.cost*this.mintAmount).toString())),
                     data: functionData,
-                    chainId: this.chainId
+                    chainId: this.network.chainId
                 };
                 const txHash = await ethereum.request({
                     method: 'eth_sendTransaction',
@@ -293,26 +281,28 @@ Vue.component('mint', {
                 console.error(error);
             }
         },
-        async getTotalMinted(){
-            var url=this.blockchainExplorerURL+this.contractNFTAddress+this.blockchainExplorerQuery+this.blockchainExplorerApiKey
-            let response = await fetch(url);
-            let data = await response.json();
-            if(data.status=='1'){
-                this.totalMinted=data.result.length
-            }
+        async getTotalSupplyCost(contract) {
+            let cost = await contract.cost();
+            let totalSupply = await contract.totalSupply();
+            this.cost = ethers.utils.formatUnits(cost, "ether")
+            this.totalSupply=ethers.utils.formatUnits(totalSupply, "wei")
         }
     },
-    async created() {
-        await this.getTotalMinted()
+    async created() {       
+        const provider = new ethers.providers.JsonRpcProvider(this.network.rpcUrls[0]);
+        const contract = new ethers.Contract(this.data.proyect.contract.address, this.data.proyect.contract.abi, provider)
+        let maxSupply = await contract.maxSupply();
+        this.maxSupply=ethers.utils.formatUnits(maxSupply, "wei")
+        
+        await this.getTotalSupplyCost(contract)
         setInterval(async () => {
-            await this.getTotalMinted()
+            await this.getTotalSupplyCost(contract)
         }, 1000);
         const { ethereum } = window;
         if(ethereum && ethereum.isMetaMask){
             this.metamaskButtonName='connect'
         }
         this.styles.buttonContainer.opacity=1
-
     }
 })
 
@@ -355,15 +345,14 @@ Vue.component('sliders', {
                     'height': '250px'
                 }
             },
-            nftName: data.proyect.nftName,
-            description: data.proyect.description
+            data: data
         }
     },
     template: `
         <div id="sliders" class="d-flex flex-column mt-4">
-            <div class="d-flex justify-content-center" :style=styles.nftName>{{nftName}}</div>
+            <div class="d-flex justify-content-center" :style=styles.nftName>{{data.proyect.nftName}}</div>
             <div class="d-flex justify-content-center mt-3 pe-4 ps-4">
-                <div id="descriptionNFT" :style=styles.description>{{description}}</div>
+                <div id="descriptionNFT" :style=styles.description>{{data.proyect.description}}</div>
             </div>
             <div class="position-relative mt-4" :style=styles.overflowImages>
                 <div class="d-flex flex-column" :style=styles.containerImages>

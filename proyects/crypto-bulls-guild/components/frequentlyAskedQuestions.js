@@ -52,15 +52,14 @@ const frequentlyAskedQuestions = new Vue({
             }
         },
         title: 'Frequently Asked Questions',
-        description: data.frequentlyAskedQuestions.description,
-        questions: data.frequentlyAskedQuestions.questions
+        data: data
     },
     template: `
         <div id="faq" class="container pt-4">
             <div :style=styles.title>{{title}}</div>
-            <div :style=styles.description>{{description}}</div>
+            <div :style=styles.description>{{data.frequentlyAskedQuestions.description}}</div>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li-navbar v-for="(item, index) in questions" :key="index" :question=item.question :answer=item.answer></li-navbar>
+                <li-navbar v-for="(item, index) in data.frequentlyAskedQuestions.questions" :key="index" :question=item.question :answer=item.answer></li-navbar>
             </ul>
         </div>
     `
