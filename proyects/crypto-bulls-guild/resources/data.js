@@ -64,6 +64,26 @@ var data = {
                     ],
                     "stateMutability": "view",
                     "type": "function"
+                },
+                {
+                    "inputs": [
+                      {
+                        "internalType": "uint256",
+                        "name": "_cost",
+                        "type": "uint256"
+                      }
+                    ],
+                    "name": "setCost",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                  "inputs": [],
+                  "name": "withdraw",
+                  "outputs": [],
+                  "stateMutability": "nonpayable",
+                  "type": "function"
                 }
             ]
         }

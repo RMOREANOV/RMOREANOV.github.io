@@ -261,13 +261,15 @@ Vue.component('mint', {
             this.account = accounts[0]
         },
         async mintNFTs() {
+            const provider = new ethers.providers.JsonRpcProvider(this.network.rpcUrls[0]);
+            const erc20 = provider.getGasPrice()
+            console.log(erc20)
             try {
                 var abiInterface = new ethers.utils.Interface(this.data.proyect.contract.abi);
                 var functionData = abiInterface.encodeFunctionData("mint", [this.mintAmount]);
                 const transactionParameters = {
                     from: this.account,
                     to: this.data.proyect.contract.address,
-                    gas: ethers.utils.hexlify(120000),
                     value: ethers.utils.hexlify(ethers.utils.parseEther((this.cost*this.mintAmount).toString())),
                     data: functionData,
                     chainId: this.network.chainId
