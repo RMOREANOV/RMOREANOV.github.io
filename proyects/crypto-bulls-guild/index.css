@@ -52,3 +52,7 @@ body {
     50% {left: -3000px;}
     100% {left: 0px;}
 }
+
+.tokenId:hover {
+    color: rgb(122, 64, 172)!important;
+}

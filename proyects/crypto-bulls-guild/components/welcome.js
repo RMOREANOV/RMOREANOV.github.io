@@ -126,11 +126,19 @@ Vue.component('mint', {
                     'z-index': '-1'
                 },
                 mintedTotal: {
-                    'font-size': '14px',
-                    'color': 'rgb(107,67,142)',
+                    'font-size': '16px',
+                    'color': 'rgb(122,64,172)'
                 },
                 mintedFinal: {
                     'color': 'rgb(193,196,190)',
+                },
+                logTittle: {
+                    'font-size': '16px',
+                    'color': 'rgb(122,64,172)'
+                },
+                logTokenId: {
+                    'font-size': '14px',
+                    'color': 'rgb(95,57,128)'
                 }
             },
             data: data,
@@ -138,11 +146,12 @@ Vue.component('mint', {
             chainId: data.proyect.chainId,
             account: null,
             network: data.networks[data.proyect.network],
+            marketplaceOpenSea: data.proyect.network.toLowerCase().includes("testnet")?data.marketplace.openSea.testnet:data.marketplace.openSea.mainnet,
             metamaskButtonName: 'default',
+            tokenIds: [],
             cost: '-.--',
             maxSupply: '--',
-            totalSupply: '--',
-
+            totalSupply: '--'
         }
     },
     template: `
@@ -191,6 +200,12 @@ Vue.component('mint', {
                 </div>
             </div>
             <div class="d-flex justify-content-center mt-4" :style=styles.mintedTotal>{{totalSupply}}<span :style=styles.mintedFinal>/{{maxSupply}} MINTED</span></div>
+            <div v-if="tokenIds.length" class="d-flex flex-column justify-content-center mt-4">
+                <div class="d-flex justify-content-center mb-2">
+                    <span :style=styles.logTittle>{{data.proyect.nftName}} successfully spawned!</span>
+                </div>
+                <a v-for="(item, index) in tokenIds" :style=styles.logTokenId target="_blank" class="d-flex justify-content-center mt-2 tokenId" :href="marketplaceOpenSea+this.data.proyect.contract.address.toLowerCase()+'/'+item">{{marketplaceOpenSea}}{{this.data.proyect.contract.address.toLowerCase()}}/{{item}}</a>
+            </div>
 
         </div>
     `,
@@ -261,9 +276,6 @@ Vue.component('mint', {
             this.account = accounts[0]
         },
         async mintNFTs() {
-            const provider = new ethers.providers.JsonRpcProvider(this.network.rpcUrls[0]);
-            const erc20 = provider.getGasPrice()
-            console.log(erc20)
             try {
                 var abiInterface = new ethers.utils.Interface(this.data.proyect.contract.abi);
                 var functionData = abiInterface.encodeFunctionData("mint", [this.mintAmount]);
@@ -277,8 +289,11 @@ Vue.component('mint', {
                 const txHash = await ethereum.request({
                     method: 'eth_sendTransaction',
                     params: [transactionParameters],
-                });
-                console.log(txHash)
+                })
+                const provider = new ethers.providers.Web3Provider(ethereum);
+                const tx = await provider.getTransaction(txHash);
+                const receipt = await tx.wait();
+                this.tokenIds=receipt.logs.map(log => {return ethers.utils.formatUnits(log.topics[3], "wei")})
             } catch (error) {
                 console.error(error);
             }
@@ -290,7 +305,7 @@ Vue.component('mint', {
             this.totalSupply=ethers.utils.formatUnits(totalSupply, "wei")
         }
     },
-    async created() {       
+    async created() {    
         const provider = new ethers.providers.JsonRpcProvider(this.network.rpcUrls[0]);
         const contract = new ethers.Contract(this.data.proyect.contract.address, this.data.proyect.contract.abi, provider)
         let maxSupply = await contract.maxSupply();

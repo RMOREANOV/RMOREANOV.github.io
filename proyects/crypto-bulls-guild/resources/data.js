@@ -4,7 +4,7 @@ var data = {
         "nftName": "Crypto Bulls",
         "description": "When a wraith daddy and a banshee mommy love each other very much, something magical happens. Out of the cabbage patch next to the graveyard rises a brand new generation of revenants! At pre-K, Baby Ghosts make friends and discover the world, until one day, the whole daycare is exorcised and all Baby Ghosts are released!",
         "tokenSymbol": "ETH",
-        "network": "Ethereum Test",
+        "network": "Ethereum Testnet",
         "social": {
             "opensea": "https://opensea.io/collection/babyghosts",
             "discord": "https://discord.gg/BabyGhosts",
@@ -88,50 +88,6 @@ var data = {
             ]
         }
     },
-    "networks": {
-        "Ethereum": {
-            "chainId": "0x1",
-            "chainName": "Ethereum Network",
-            "nativeCurrency": {name: "ETH", symbol: "ETH", decimals: 18},
-            "rpcUrls": ["https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"],
-            "blockExplorerUrls": ["https://etherscan.io"]
-        },
-        "Ethereum Test": {
-            "chainId": "0x4",
-            "chainName": "Rinkeby Network",
-            "nativeCurrency": {name: "ETH", symbol: "ETH", decimals: 18},
-            "rpcUrls": ["https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"],
-            "blockExplorerUrls": ["https://rinkeby.etherscan.io"]
-        },
-        "Polygon": {
-            "chainId": "0x89",
-            "chainName": "Polygon Network",
-            "nativeCurrency": {name: "MATIC", symbol: "MATIC", decimals: 18},
-            "rpcUrls": ["https://polygon-rpc.com"],
-            "blockExplorerUrls": ["https://www.polygonscan.com/"]
-        },
-        "Polygon Test": {
-            "chainId": "0x13881",
-            "chainName": "Polygon Mumbai Testnet",
-            "nativeCurrency": {name: "tMATIC", symbol: "tMATIC", decimals: 18},
-            "rpcUrls": ["https://rpc-mumbai.maticvigil.com"],
-            "blockExplorerUrls": ["https://mumbai.polygonscan.com/"]
-        },
-        "BSC": {
-            "chainId": '0x38',
-            "chainName": 'Binance Smart Chain',
-            "nativeCurrency": { name: 'BNB', symbol: 'BNB', decimals: 18},
-            "rpcUrls": ["https://bsc-dataseed1.binance.org"],
-            "blockExplorerUrls": ["https://bscscan.com/"]
-        },
-        "BSC Testnet": {
-            "chainId": '0x38',
-            "chainName": 'Binance Smart Chain Tesnet',
-            "nativeCurrency": { name: 'tBNB', symbol: 'tBNB', decimals: 18},
-            "rpcUrls": ["https://data-seed-prebsc-1-s1.binance.org:8545"],
-            "blockExplorerUrls": ["https://testnet.bscscan.com"]
-        }
-    },
     "frequentlyAskedQuestions": {
         "description": "Each Baby Ghost is unique and programmatically generated from over 140 possible traits, including backgrounds, skins, eyes, disguises, accessories...",
         "questions": [
@@ -156,5 +112,55 @@ var data = {
                 "answer": 'Well, yeah! At least we believe that Baby Ghosts have a long life of haunting ahead of them, and will keep growing as the project doesn’t end here! Hopefully Baby Ghosts go to the moon, but like anything in life, don’t spend money you can’t afford not to have.'
             }
         ]
+    },
+    "marketplace": {
+        "openSea": {
+            "mainnet": "https://opensea.io/assets/",
+            "testnet": "https://testnets.opensea.io/assets/"
+        }
+    },
+    "networks": {
+        "Ethereum": {
+            "chainId": "0x1",
+            "chainName": "Ethereum Network",
+            "nativeCurrency": {name: "ETH", symbol: "ETH", decimals: 18},
+            "rpcUrls": ["https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"],
+            "blockExplorerUrls": ["https://etherscan.io"]
+        },
+        "Ethereum Testnet": {
+            "chainId": "0x4",
+            "chainName": "Rinkeby Network",
+            "nativeCurrency": {name: "ETH", symbol: "ETH", decimals: 18},
+            "rpcUrls": ["https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"],
+            "blockExplorerUrls": ["https://rinkeby.etherscan.io"]
+        },
+        "Polygon": {
+            "chainId": "0x89",
+            "chainName": "Polygon Network",
+            "nativeCurrency": {name: "MATIC", symbol: "MATIC", decimals: 18},
+            "rpcUrls": ["https://polygon-rpc.com"],
+            "blockExplorerUrls": ["https://www.polygonscan.com/"]
+        },
+        "Polygon Testnet": {
+            "chainId": "0x13881",
+            "chainName": "Polygon Mumbai Testnet",
+            "nativeCurrency": {name: "tMATIC", symbol: "tMATIC", decimals: 18},
+            "rpcUrls": ["https://rpc-mumbai.maticvigil.com"],
+            "blockExplorerUrls": ["https://mumbai.polygonscan.com/"]
+        },
+        "BSC": {
+            "chainId": '0x38',
+            "chainName": 'Binance Smart Chain',
+            "nativeCurrency": { name: 'BNB', symbol: 'BNB', decimals: 18},
+            "rpcUrls": ["https://bsc-dataseed1.binance.org"],
+            "blockExplorerUrls": ["https://bscscan.com/"]
+        },
+        "BSC Testnet": {
+            "chainId": '0x38',
+            "chainName": 'Binance Smart Chain Tesnet',
+            "nativeCurrency": { name: 'tBNB', symbol: 'tBNB', decimals: 18},
+            "rpcUrls": ["https://data-seed-prebsc-1-s1.binance.org:8545"],
+            "blockExplorerUrls": ["https://testnet.bscscan.com"]
+        }
     }
 }
