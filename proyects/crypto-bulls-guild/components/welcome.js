@@ -45,8 +45,7 @@ Vue.component('mint', {
                 },
                 buttonContainer: {
                     'width': '275px',
-                    'height': '60px',
-                    'opacity': '0'
+                    'height': '60px'
                 },
                 buttonDefault: {
                     'font-size': '12.5px',
@@ -180,7 +179,7 @@ Vue.component('mint', {
             </div>
             <div class="d-flex justify-content-center mt-4">
                 <div :style=styles.buttonContainer>
-                    <div v-if="metamaskButtonName=='default'" class="w-100 h-100">
+                    <div v-if="metamaskButtonName=='install'" class="w-100 h-100">
                         <div id="btnInstallMetamask" class="d-flex align-items-center justify-content-center w-100 h-100" :style="[styles.buttonDefault, styles.buttonInstallMetamask]">
                             <span class="d-flex">YOU NEED TO INSTALL<span>&nbsp;</span><a href="https://metamask.io/download.html" :style=styles.textMetamask target="_blank">METAMASK</a></span>
                         </div>
@@ -218,12 +217,10 @@ Vue.component('mint', {
         async connect() {
             try {
                 await ethereum.request({method: 'eth_requestAccounts'})
-                this.metamaskButtonName='switch'
                 try {
                     const chainId = await ethereum.request({method: 'eth_chainId'})
                     if(chainId==this.network.chainId){
                         this.metamaskButtonName='mint'
-                        this.styles.buttonContainer.opacity=1
                         await this.getAccount()
                     }else{
                         this.metamaskButtonName='switch'
@@ -231,11 +228,12 @@ Vue.component('mint', {
                     }
                 } catch (error) {
                     console.log(error)
-                    this.styles.buttonContainer.opacity=1
                 }
             } catch (error) {
                 console.error(error);
-                this.styles.buttonContainer.opacity=1
+                if(error.code==-32002){
+                    alert("Connect to Metamask manually.")
+                }
             }
         },
         async switchNetwork() {
@@ -245,7 +243,6 @@ Vue.component('mint', {
                     params: [{ chainId: this.network.chainId }],
                 });
                 this.metamaskButtonName='mint'
-                this.styles.buttonContainer.opacity=1
                 await this.getAccount()
             } catch (error) {
                 console.error(error);
@@ -253,22 +250,24 @@ Vue.component('mint', {
                     this.metamaskButtonName='add'
                     await this.addNetwork()
                 }
+                if(error.code==-32002){
+                    alert("Switch to "+this.network.chainName+" manually.")
+                }
             }
         },
         async addNetwork() {
-            var network = { ...this.network}
-            delete network.shortName
             try {
                 await ethereum.request({
                     method: "wallet_addEthereumChain",
-                    params: [ network ],
+                    params: [ this.network ],
                 });
                 this.metamaskButtonName='switch'
                 await this.switchNetwork()
-                this.styles.buttonContainer.opacity=1
             } catch (error) {
                 console.error(error);
-                this.styles.buttonContainer.opacity=1
+                if(error.code==-32002){
+                    alert("Add "+this.network.chainName+" manually.")
+                }
             }
         },
         async getAccount() {
@@ -305,7 +304,24 @@ Vue.component('mint', {
             this.totalSupply=ethers.utils.formatUnits(totalSupply, "wei")
         }
     },
-    async created() {    
+    async created() {
+        const { ethereum } = window;
+        if(ethereum && ethereum.isMetaMask){
+            this.metamaskButtonName='connect'
+        }else{
+            this.metamaskButtonName='install'
+        }
+
+        ethereum.on('chainChanged', (chainId) => {
+            if(this.network.chainId!=chainId){
+                this.metamaskButtonName='connect'
+            }
+        });
+
+        ethereum.on('accountsChanged', (accounts) => {
+            this.metamaskButtonName='connect'
+        });
+
         const provider = new ethers.providers.JsonRpcProvider(this.network.rpcUrls[0]);
         const contract = new ethers.Contract(this.data.proyect.contract.address, this.data.proyect.contract.abi, provider)
         let maxSupply = await contract.maxSupply();
@@ -315,11 +331,7 @@ Vue.component('mint', {
         setInterval(async () => {
             await this.getTotalSupplyCost(contract)
         }, 1000);
-        const { ethereum } = window;
-        if(ethereum && ethereum.isMetaMask){
-            this.metamaskButtonName='connect'
-        }
-        this.styles.buttonContainer.opacity=1
+        
     }
 })
 
